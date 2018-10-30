@@ -4,7 +4,7 @@
 
 
 from flask import Flask
-from flask import render_template
+from flask import render_template,flash,redirect,url_for
 from config import Config
 from forms import LoginForm
 
@@ -38,10 +38,12 @@ def index():
 
 
 #mapping "/login" to login web page
-@app.route("/login")
+@app.route("/login",methods=['GET','POST'])
 def login():
 	form = LoginForm()
-
+	if form.validate_on_submit():
+		flash('login requested for user {}, remember_me={}'.format(form.username.data,form.remember_me.data))
+		return redirect(url_for('index'))
 	return render_template('login.html',title = 'Sign In', form = form)
 
 
@@ -49,6 +51,8 @@ def login():
 #main entry point
 if __name__ == '__main__':
 	app.run()
+else:
+	print("debugging the main Module")
 
 
 
