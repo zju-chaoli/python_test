@@ -11,6 +11,7 @@ from forms import LoginForm
 
 app = Flask(__name__)
 app.config.from_object(Config)
+# print(app.config['OPENID_PROVIDERS'])
 
 #mapping "/" to function hello_world
 @app.route('/')
@@ -42,9 +43,9 @@ def index():
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		flash('login requested for user {}, remember_me={}'.format(form.username.data,form.remember_me.data))
+		flash('login requested for OpenID= {}, remember_me={}'.format(form.openid.data,form.remember_me.data))
 		return redirect(url_for('index'))
-	return render_template('login.html',title = 'Sign In', form = form)
+	return render_template('login.html',title = 'Sign In', form = form,providers=app.config['OPENID_PROVIDERS'])
 
 
 
